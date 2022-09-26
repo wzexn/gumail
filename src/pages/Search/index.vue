@@ -1,17 +1,18 @@
 <!--  -->
 <template>
   <div>
-    <h1>params参数---{{$route.params.keyword}}</h1>
-    <h1>query参数---{{$route.query.k}}</h1>
+  <!-- 这是搜索页 -->
+  <TypeNav></TypeNav>
   </div>
 </template>
 
 <script>
+import TypeNav from '@/components/typeNav/index.vue';
 export default {
-  data () {
-    return {
-    }
-  }
+    data() {
+        return {};
+    },
+    components: { TypeNav }
 }
 
 </script>

@@ -3,9 +3,9 @@
   <div class="type-nav">
     <div class="container">
       <!-- 事件委托 -->
-      <div @mouseleave="leaveIndex">
+      <div @mouseleave="leaveShow" @mouseenter="enterShow">
         <h2 class="all">全部商品分类</h2>
-        <div class="sort">
+        <div class="sort" v-show="show">
           <div class="all-sort-list2" @click="goSearch">
             <div
               class="item"
@@ -78,12 +78,14 @@ export default {
     return {
       //存储用户鼠标的位置
       currentIndex: -1,
+      show:true,
     };
   },
   //组件挂载完毕 就可以向服务器发请求了
   mounted() {
-    //通知vuex发请求，获取数据，存储于仓库里
-    this.$store.dispatch("categoryList");
+    //当组件挂载完毕 让show 的属性变为false 
+    if(this.$route.path!='/home')
+    this.show = false;
   },
   computed: {
     ...mapState({
@@ -118,12 +120,29 @@ export default {
         } else {
           query.category3Id = category3id;
         }
+        //判断：路由跳转要带params参数一起传(合并参数)
+        if(this.$route.params){
+        location.params = this.$route.params;
         //整理完参数
         location.query = query;
         //路由的跳转
         this.$router.push(location);
+        }
+
       }
     },
+    //当鼠标移入的时候 让商品分类列表展示
+    enterShow(){
+      this.show = true;
+    },
+    //当鼠标移开的时候 让商品分类列表消失
+    leaveShow(){
+      //判断如果是search组件才会执行
+      this.currentIndex = -1;
+      if(this.$route.path!='/home'){
+      this.show = false;
+      }
+    }
   },
 };
 </script>
