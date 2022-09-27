@@ -6,8 +6,12 @@
         <!--banner轮播-->
         <div class="swiper-container" id="mySwiper">
           <div class="swiper-wrapper">
-            <div class="swiper-slide" v-for="(carousel,index) in bannerList" :key="carousel.id">
-              <img :src="carousel.imgUrl" >
+            <div
+              class="swiper-slide"
+              v-for="(carousel, index) in bannerList"
+              :key="carousel.id"
+            >
+              <img :src="carousel.imgUrl" />
             </div>
             <!-- <div class="swiper-slide">
               <img src="./images/banner2.jpg" />
@@ -103,7 +107,7 @@
 <script>
 import { mapState } from "vuex";
 //引入轮播图
-import Swiper from 'swiper';
+import Swiper from "swiper";
 export default {
   data() {
     return {};
@@ -111,7 +115,7 @@ export default {
   mounted() {
     //派发action：通过vuex发起ajax请求 将数据存储在仓库中
     this.$store.dispatch("getBannerList");
-    setTimeout(()=>{
+    /*  setTimeout(()=>{
     var mySwiper = new Swiper (document.querySelector('.swiper-container'), {
     loop: true, // 循环模式选项
     // 如果需要分页器
@@ -125,19 +129,47 @@ export default {
       prevEl: '.swiper-button-prev',
     },
   })  
-    },2000)
-        
+    },2000) */
   },
   computed: {
     ...mapState({
       bannerList: (state) => state.home.bannerList,
     }),
   },
+  watch: {
+    //监听bannerList数据的变化：因为这条数据发生过变化 由一个空数组通过请求获得了四个元素
+    bannerList: {
+      handler(newValue, oldValue) {
+        //通过wath监听bannerlist属性 属性值的变化
+        //执行了handler方法 表示组件实例身上已经有了数据【四个数组元素】
+        //当前函数的执行只能确定bannerlist数据是有的 但是不能确定v-for是否执行完毕
+        //v-for执行完毕之后才能有结构 在watch当中是不能确定的
+        //nextTick：在下次DOM更新循环结束之后 执行延迟回调，在修改数据之后 立刻使用这个方法 获取更新后的DOM.
+        this.$nextTick(() => {
+          var mySwiper = new Swiper(
+            document.querySelector(".swiper-container"),
+            {
+              loop: true, // 循环模式选项
+              // 如果需要分页器
+              pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+              },
+              // 如果需要前进后退按钮
+              navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+              },
+            }
+          );
+        });
+      },
+    },
+  },
 };
 </script>
 
 <style lang='less'>
-
 .list-container {
   width: 1200px;
   margin: 0 auto;
