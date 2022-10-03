@@ -1,9 +1,12 @@
 import Vue from 'vue'
 import App from './App.vue'
-//三级联动组件---全局组件
+//三级联动的全局组件
 import typeNav from '@/components/typeNav';
-//第一个参数：全局组件的名字 第二个参数：哪一个组件
+//轮播图的全局组件
+import Carousel from '@/components/Carousel'
+// 使用一次全局组件 第一个参数：全局组件的名字 第二个参数：哪一个组件
 Vue.component(typeNav.name,typeNav);
+Vue.component(Carousel.name,Carousel);
 /* 引入路由 */
 import router from '@/router';
 //引入仓库
