@@ -5,7 +5,7 @@ import axios from "axios";
 //引入进度条
 import nProgress, { start } from "nprogress";
 //引入进度条样式
-import "nprogress/nprogress.css";
+import "nprogress/nprogress.css";   
 //star 代表进度条开始 done 代表进度条结束
 const requests = axios.create({
     //配置对象

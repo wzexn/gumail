@@ -4,7 +4,7 @@
     <div class="sortList clearfix">
       <div class="center">
         <!--banner轮播-->
-        <div class="swiper-container" id="mySwiper">
+        <div class="swiper-container" ref="mySwiper">
           <div class="swiper-wrapper">
             <div
               class="swiper-slide"
@@ -146,8 +146,9 @@ export default {
         //v-for执行完毕之后才能有结构 在watch当中是不能确定的
         //nextTick：在下次DOM更新循环结束之后 执行延迟回调，在修改数据之后 立刻使用这个方法 获取更新后的DOM.
         this.$nextTick(() => {
-          var mySwiper = new Swiper(
-            document.querySelector(".swiper-container"),
+           var mySwiper = new Swiper(
+            /* document.querySelector(".swiper-container"), */
+            this.$refs.mySwiper,
             {
               loop: true, // 循环模式选项
               // 如果需要分页器

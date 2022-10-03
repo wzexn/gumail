@@ -18,3 +18,10 @@ export const reqGetBannerList = ()=>
         url:'/banner',
         method:'get'
      })
+
+//获取floor组件的数据
+export const reqFloorList = ()=>
+      mockquests({
+        url:'/floor',
+        method:'get'
+      })
