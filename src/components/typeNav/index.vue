@@ -110,7 +110,7 @@ export default {
       //如果标签身上有categoryname那他一定是a标签
       if (categoryname) {
         //整理路由跳转的参数
-        let location = { name: "seach" };
+        let location = { name: "search" };
         let query = { categoryName: categoryname };
         //一级分类 二级分类 三级分类的a标签
         if (category1id) {
