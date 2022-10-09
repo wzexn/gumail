@@ -174,7 +174,21 @@ export default {
       this.$store.dispatch('getSearchList',this.searchParams);
     }
 
-  }
+  },
+  watch:{
+      //监听路由信息是否发生变化，如果发生变化，再次发起请求
+      $route(newValue,oldValue){
+         //再次发请求之前要整理带给服务器的数据
+         Object.assign(this.searchParams,this.$route.query,this.$route.params);
+        //再次发起ajax请求
+        this.getData();
+        //每次请求完毕，应该把相应的1.2.3级分类的ID置空，让他接受下一次相应的1.2.3id
+        this.searchParams.category1Id = ''
+        this.searchParams.category2Id = ''
+        this.searchParams.category3Id = ''
+      }
+
+    }
 }
 </script>
 
