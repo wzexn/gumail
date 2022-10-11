@@ -12,10 +12,8 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x">手机</li>
-            <li class="with-x">iphone<i>×</i></li>
-            <li class="with-x">华为<i>×</i></li>
-            <li class="with-x">OPPO<i>×</i></li>
+            <li class="with-x" v-if="searchParams.categoryName">{{searchParams.categoryName}}<i @click="removeCategoryName">×</i></li>
+            <!-- 点击事件调用removeCategoryName函数 -->
           </ul>
         </div>
 
@@ -116,6 +114,7 @@
 <script>
 import SearchSelector from './SearchSelector/SearchSelector'
 import { mapGetters } from 'vuex';
+import { search } from 'superagent';
 export default {
   name: 'Search',
   components: {
@@ -172,8 +171,26 @@ export default {
     //向服务器发送请求获取search模块数据（根据参数的不同返回不同的数据）
     getData() {
       this.$store.dispatch('getSearchList',this.searchParams);
-    }
-
+    },
+    //删除分类的文字
+    removeCategoryName(){
+      //把带给服务器的数据滞空了 还需要向服务器发请求 展示默认值
+      this.searchParams.categoryName = undefined;
+      this.searchParams.category1Id = undefined;
+      this.searchParams.category2Id = undefined;
+      this.searchParams.category3Id = undefined;
+      //如果把参数都滞空 属性值为空的还是会把相应的字段带给服务器 undefined则不会把字段带给服务器 节省性能
+      this.getData();
+      //地址栏也需要从带参数的状态恢复默认 可以选择路由跳转回search路由 等于自己眺自己
+      /*this.$router.push({name:"search"}); */
+      //一棒子打死不严谨,本意是删除query参数，如果路径中的params参数不该删除 眺转时就应该保留
+      //进行判断
+      if(this.$route.params){
+        this.$router.push({name:"search",
+        params: this.$route.pramas
+      })
+      }
+    },
   },
   watch:{
       //监听路由信息是否发生变化，如果发生变化，再次发起请求
