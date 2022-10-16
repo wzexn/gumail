@@ -12,8 +12,11 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
+            <!-- 分类的面包屑 -->
             <li class="with-x" v-if="searchParams.categoryName">{{searchParams.categoryName}}<i @click="removeCategoryName">×</i></li>
             <!-- 点击事件调用removeCategoryName函数 -->
+            <!-- 关键字的面包屑 -->
+           <li class="with-x" v-if="searchParams.keyword">{{searchParams.keyword}}<i @click="removeKeyword">×</i></li> 
           </ul>
         </div>
 
@@ -150,7 +153,7 @@ export default {
   },
   //只有在组件挂载完毕之前才能获取到数据  
   beforeMount(){
-/*     this.searchParams.category1Id = this.$route.query.category1Id;
+/*  this.searchParams.category1Id = this.$route.query.category1Id;
     this.searchParams.category2Id = this.$route.query.category2Id;
     this.searchParams.category3Id = this.$route.query.category3Id;
     this.searchParams.categoryName = this.$route.query.categoryName;
@@ -191,7 +194,21 @@ export default {
       })
       }
     },
-  },
+    //删除关键字
+    removeKeyword(){
+      //给服务器带的参数searchPrams的keyword滞空
+      this.searchParams.keyword = undefined;
+      //再次发请求
+      this.getData();
+      //通知兄弟组件Header清除关键字
+      this.$bus.$emit("clear");
+      //进行路由的眺转
+        if(this.$route.query){
+          this.$router.push({name:"search",query:this.$route.query})
+        } 
+      },
+    }, 
+    
   watch:{
       //监听路由信息是否发生变化，如果发生变化，再次发起请求
       $route(newValue,oldValue){
@@ -200,13 +217,12 @@ export default {
         //再次发起ajax请求
         this.getData();
         //每次请求完毕，应该把相应的1.2.3级分类的ID置空，让他接受下一次相应的1.2.3id
-        this.searchParams.category1Id = ''
-        this.searchParams.category2Id = ''
-        this.searchParams.category3Id = ''
-      }
-
-    }
-}
+        this.searchParams.category1Id = '';
+        this.searchParams.category2Id = '';
+        this.searchParams.category3Id = '';
+      },
+    },
+};
 </script>
 
 
